@@ -51,8 +51,8 @@ trait BaseRepositoryControllerTrait
     protected function bootRepository()
     {
         // setup the default
-        $this->createTitle = rpPackageTrans("repository.title.create");
-        $this->editTitle = rpPackageTrans("repository.title.edit");
+        $this->createTitle = rpPackageTrans("titles.create");
+        $this->editTitle = rpPackageTrans("titles.edit");
 
         // creates the repository
         $this->repository = $this->createRepository();

@@ -11,7 +11,7 @@
  */
 function rpPackageTrans($id = null, $parameters = [], $domain = 'messages', $locale = null) {
     if (is_string($id)) {
-        $package = RepositoryServiceProvider::NAME."::".$id;
+        $package = \Pion\Repository\RepositoryServiceProvider::NAME."::".$id;
         return trans($package, $parameters, $domain, $locale);
     } else {
         return trans($id, $parameters, $domain, $locale);

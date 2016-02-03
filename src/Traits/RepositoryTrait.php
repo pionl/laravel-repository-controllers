@@ -345,7 +345,7 @@ trait RepositoryTrait
     public function updateWithRedirect($id, Request $request, $redirectToAction = null, $callback = null)
     {
         $object = $this->update($id, $request, $callback);
-        return $this->createRedirectObjectWithSuccess(rpPackageTrans("repository.message.updated"), $object, $redirectToAction);
+        return $this->createRedirectObjectWithSuccess(rpPackageTrans("messages.updated"), $object, $redirectToAction);
     }
 
     /**
@@ -373,7 +373,7 @@ trait RepositoryTrait
     {
         $object = $this->create($request);
 
-        return $this->createRedirectObjectWithSuccess(rpPackageTrans("repository.message.created"), $object, $redirectToAction);
+        return $this->createRedirectObjectWithSuccess(rpPackageTrans("messages.created"), $object, $redirectToAction);
     }
 
     /**
@@ -462,7 +462,7 @@ trait RepositoryTrait
     public function deleteWithRedirect($id, $redirectToAction = null)
     {
         $this->deleteByKey($id);
-        return $this->createRedirectObjectWithSuccess(rpPackageTrans("repository.message.deleted"), null, $redirectToAction);
+        return $this->createRedirectObjectWithSuccess(rpPackageTrans("messages.deleted"), null, $redirectToAction);
     }
 
     /**
