@@ -1,4 +1,8 @@
-# Errors
+# Package in development progress
+
+# Installation
+    
+    composer require pion/laravel-repository-controllers
 
 # Usage
 
