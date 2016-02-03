@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use StandardExceptions\OperationExceptions\InvalidOperationException;
 
+/**
+ * Class RepositoryTrait
+ * @package Pion\Repository\Traits
+ */
 trait RepositoryTrait
 {
     use ValidatesRequests;
@@ -36,16 +40,6 @@ trait RepositoryTrait
      * @var string
      */
     protected $redirectSuccessIndex = "success";
-
-    /**
-     * RepositoryTrait constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->objectKeyCollumn = $this->getObjectInstance()->getKeyName();
-    }
-
 
     #######
     ### Object helpers
@@ -78,6 +72,11 @@ trait RepositoryTrait
      */
     public function getObjectNameCollumn($collumn)
     {
+        // prefil the default value
+        if (is_null($this->objectNameCollumn)) {
+            $this->objectKeyCollumn = $this->getObjectInstance()->getKeyName();
+        }
+
         return is_null($collumn) ? $this->objectNameCollumn : $collumn;
     }
 
