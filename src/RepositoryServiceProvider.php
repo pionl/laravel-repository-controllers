@@ -19,11 +19,12 @@ class RepositoryServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        $resources = __DIR__.'/../resources/lang';
 
-        $this->loadTranslationsFrom(__DIR__.'/resources', self::NAME);
+        $this->loadTranslationsFrom($resources, self::NAME);
 
         $this->publishes([
-            __DIR__.'/resources' => \resource_path('lang/vendor/'.self::NAME),
+            $resources => \resource_path('lang/vendor/'.self::NAME),
         ]);
     }
 
