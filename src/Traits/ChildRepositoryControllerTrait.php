@@ -314,7 +314,7 @@ trait ChildRepositoryControllerTrait
     /**
      * Returns the view with required data for every form (create or edit). It will add the correct
      *
-     * @param Model $parentObject
+     * @param Model $parentObject   the parent object that owns the current object (or will own)
      * @param Model|null $object
      * @param array $data
      *
@@ -322,19 +322,34 @@ trait ChildRepositoryControllerTrait
      */
     protected function getFormView($parentObject, $object = null, $data = [])
     {
-        InvalidOperationException::ifFalse(
-            is_string($this->formView),
-            "You must subclass this method and return a view for form");
-
         // add parent object to the view
         $data[$this->formParentObjectIndex] = $parentObject;
 
-        // add current object to the view (in edit option)
-        if (is_object($object)) {
-            $data[$this->formObjectIndex] = $object;
-        }
-
-        // return the data
-        return view($this->formView, $data);
+        // the child repository need to use the parent object and will be sent as third option
+        $parameters = [$parentObject];
+        return $this->createFormView($data, $object, $parameters);
     }
+
+    /**
+     * Prepares the form data for all the views
+     * @param array $data
+     * @param Model|null $object
+     * @param Model $parentObject
+     */
+    protected function prepareFormData(array &$data, $object, $parentObject) {}
+
+    /**
+     * Prepares the data only for the
+     * @param array $data
+     * @param Model $object
+     * @param Model $parentObject
+     */
+    protected function prepareEditFormData(array &$data, $object, $parentObject) {}
+
+    /**
+     * Prepares the data for create form
+     * @param array $data
+     * @param Model $parentObject
+     */
+    protected function prepareCreateFormData(array &$data, $parentObject) {}
 }

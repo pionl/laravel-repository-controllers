@@ -11,7 +11,10 @@
   "autoload": {
     "psr-4": {
       "Pion\\Repository\\": "src/"
-    }
+    },
+    "files": [
+      "src/Helpers/translate.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

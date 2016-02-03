@@ -4,7 +4,6 @@ namespace Pion\Repository\Traits;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use StandardExceptions\OperationExceptions\InvalidOperationException;
 
 /**
  * Class RepositoryControllerTrait
@@ -151,16 +150,6 @@ trait RepositoryControllerTrait {
      */
     protected function getFormView($object = null, $data = [])
     {
-        InvalidOperationException::ifFalse(
-            is_string($this->formView),
-            "You must subclass this method and return a view for form");
-
-        // add current object to the view (in edit option)
-        if (is_object($object)) {
-            $data[$this->formObjectIndex] = $object;
-        }
-
-        // return the data
-        return view($this->formView, $data);
+        return $this->createFormView($data, $object);
     }
 }
