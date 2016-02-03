@@ -12,9 +12,13 @@ Add the service provider to copy the translations to the app.php config
 
     Pion\Repository\RepositoryServiceProvider::class
     
-Run the publish command to copy the translations
+Run the publish command to copy the translations (Laravel 5.2)
 
-    php artisan publish
+    php artisan publish --provider="Pion\Repository\RepositoryServiceProvider"
+    
+Run the publish command to copy the translations (Laravel 5.1)
+
+    php artisan vendor:publish --provider="Pion\Repository\RepositoryServiceProvider"
 
 # Usage
 
