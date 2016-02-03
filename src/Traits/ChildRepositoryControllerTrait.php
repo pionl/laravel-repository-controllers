@@ -30,7 +30,13 @@ use StandardExceptions\ValidationExceptions\InvalidNumberException;
  */
 trait ChildRepositoryControllerTrait
 {
-    use BaseRepositoryControllerTrait;
+    /**
+     * Extend the base repository controller and add alias to bootRepository
+     * for extending usage
+     */
+    use BaseRepositoryControllerTrait {
+        bootRepository as bootBaseRepository;
+    }
 
     /**
      * Defines the index for the parent object in the form view. Must be in the
@@ -62,9 +68,9 @@ trait ChildRepositoryControllerTrait
     /**
      * Boots the basic attributes
      */
-    public function bootRepository()
+    protected function bootRepository()
     {
-        parent::bootRepository();
+        $this->bootBaseRepository();
 
         if (empty($this->parentObjectSelect)) {
             $this->parentObjectSelect = [
