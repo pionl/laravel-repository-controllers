@@ -60,11 +60,11 @@ trait ChildRepositoryControllerTrait
     protected $repositoryController;
 
     /**
-     * ChildRepositoryControllerTrait constructor.
+     * Boots the basic attributes
      */
-    public function __construct()
+    public function bootRepository()
     {
-        parent::__construct();
+        parent::bootRepository();
 
         if (empty($this->parentObjectSelect)) {
             $this->parentObjectSelect = [

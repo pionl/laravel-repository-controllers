@@ -46,14 +46,11 @@ trait BaseRepositoryControllerTrait
      * BaseRepositoryControllerTrait constructor.
      * Prepares the basic repository
      */
-    public function __construct()
+    public function bootRepository()
     {
         // setup the default
         $this->createTitle = trans("repository.title.create");
         $this->editTitle = trans("repository.title.edit");
-
-        // call the controller construct
-        parent::__construct();
 
         // creates the repository
         $this->repository = $this->createRepository();

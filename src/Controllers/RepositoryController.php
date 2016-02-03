@@ -8,7 +8,8 @@ use Pion\Repository\Traits\RepositoryControllerTrait;
 /**
  * Class RepositoryController
  *
- * Empty repository controller
+ * Empty repository controller only used for the ChildRepositoryControllerTrait
+ * to enable usage of the create/edit and etc.
  *
  * @package Pion\Repository\Controllers
  */
@@ -17,7 +18,16 @@ class RepositoryController extends Controller
     use RepositoryControllerTrait;
 
     /**
-     * Creates a repository we will use
+     * RepositoryController constructor.
+     */
+    public function __construct()
+    {
+        $this->bootRepository();
+    }
+
+
+    /**
+     * Creates a repository we will use the same from the ChildRepositoryControllerTrait
      * @return BaseRepository
      */
     protected function createRepository()
