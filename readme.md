@@ -1,8 +1,20 @@
 # Package in development progress
 
+# Requirements
+
+    Laravel Framework (5.1, 5.2) - 5.0 not tested
+
 # Installation
     
     composer require pion/laravel-repository-controllers
+    
+Add the service provider to copy the translations to the app.php config
+
+    Pion\Repository\RepositoryServiceProvider::class
+    
+Run the publish command to copy the translations
+
+    php artisan publish
 
 # Usage
 

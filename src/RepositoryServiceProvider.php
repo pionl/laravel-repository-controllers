@@ -23,7 +23,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/resources', self::NAME);
 
         $this->publishes([
-            __DIR__.'/resources' => resource_path('lang/vendor/'.self::NAME),
+            __DIR__.'/resources' => \resource_path('lang/vendor/'.self::NAME),
         ]);
     }
 
