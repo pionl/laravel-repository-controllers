@@ -72,10 +72,6 @@ trait RepositoryTrait
      */
     public function getObjectNameCollumn($collumn)
     {
-        // prefil the default value
-        if (is_null($this->objectNameCollumn)) {
-            $this->objectKeyCollumn = $this->getObjectInstance()->getKeyName();
-        }
 
         return is_null($collumn) ? $this->objectNameCollumn : $collumn;
     }
@@ -88,6 +84,11 @@ trait RepositoryTrait
      */
     public function getObjectKeyCollumn($collumn)
     {
+        // prefil the default value
+        if (is_null($this->objectNameCollumn)) {
+            $this->objectKeyCollumn = $this->getObjectInstance()->getKeyName();
+        }
+        
         return is_null($collumn) ? $this->objectKeyCollumn : $collumn;
     }
 
