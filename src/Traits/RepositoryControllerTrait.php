@@ -20,18 +20,21 @@ trait RepositoryControllerTrait {
 
     /**
      * Custom action redirection name for overiding the current context
-     * @var stirng
+     * @var string|boolean
      */
     private $storeRedirectionAction = false;
 
     /**
      * Renders the create page
+     *
+     * @param Request $request
+     *
      * @return View
      */
-    public function create()
+    public function create(Request $request)
     {
         $this->createNavigation($this->createTitle);
-        return $this->getFormView();
+        return $this->getFormView($request);
     }
 
     /**
@@ -51,17 +54,18 @@ trait RepositoryControllerTrait {
     /**
      * The edit of the object
      *
-     * @param $id
+     * @param Request $request
+     * @param mixed $id
      *
      * @return View
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $object = $this->repository->findOrFail($id);
 
         $this->createNavigation($this->editTitle, $object);
 
-        return $this->getFormView($object);
+        return $this->getFormView($request, $object);
     }
     /**
      * Update the specified resource in storage.
@@ -123,7 +127,7 @@ trait RepositoryControllerTrait {
     /**
      * Should we redirect to edit on create
      * @param boolean $redirectToEditOnCreate
-     * @return RepositoryController
+     * @return $this
      */
     public function setRedirectToEditOnCreate($redirectToEditOnCreate)
     {
@@ -143,13 +147,14 @@ trait RepositoryControllerTrait {
     /**
      * Returns the view with required data for every form (create or edit). It will add the correct
      *
+     * @param Request $request
      * @param Model|null $object
      * @param array $data
      *
      * @return View
      */
-    protected function getFormView($object = null, $data = [])
+    protected function getFormView($request, $object = null, $data = [])
     {
-        return $this->createFormView($data, $object);
+        return $this->createFormView($data, $object, $request);
     }
 }

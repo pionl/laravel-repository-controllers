@@ -99,11 +99,11 @@ trait ChildRepositoryControllerTrait
     /**
      * Show the form for creating a new resource for the parent object
      *
+     * @param Request $request
      * @param int $parentId
-     *
      * @return \Illuminate\Http\Response
      */
-    public function create($parentId)
+    public function create(Request $request, $parentId)
     {
         // check if valide int
         InvalidNumberException::throwIf($parentId);
@@ -111,7 +111,7 @@ trait ChildRepositoryControllerTrait
         // get the parent object
         $parentObject = $this->createNavigationWithParentId($parentId, $this->createTitle);
 
-        return $this->getFormView($parentObject);
+        return $this->getFormView($parentObject, $request);
     }
 
     /**
@@ -132,11 +132,12 @@ trait ChildRepositoryControllerTrait
     /**
      * Show the form for editing the specified resource for the parent object
      *
-     * @param  int  $parentId
-     * @param  int  $id
+     * @param Request $request
+     * @param  int $parentId
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($parentId, $id)
+    public function edit(Request $request, $parentId, $id)
     {
         /** @var Model $object */
         $object = $this->repository->findOrFail($id);
@@ -148,7 +149,7 @@ trait ChildRepositoryControllerTrait
 
         $section = $this->createNavigationWithParentId($parentId, $this->getEditTitleForObject($object));
 
-        return $this->getFormView($section, $object);
+        return $this->getFormView($section, $request, $object);
     }
 
     /**
@@ -168,11 +169,11 @@ trait ChildRepositoryControllerTrait
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $paretnId
+     * @param  int $parentId
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($paretnId, $id)
+    public function destroy($parentId, $id)
     {
         return $this->repositoryController->destroy($id);
     }
@@ -314,20 +315,20 @@ trait ChildRepositoryControllerTrait
     /**
      * Returns the view with required data for every form (create or edit). It will add the correct
      *
-     * @param Model $parentObject   the parent object that owns the current object (or will own)
+     * @param Model $parentObject the parent object that owns the current object (or will own)
+     * @param Request $request
      * @param Model|null $object
      * @param array $data
-     *
      * @return View
      */
-    protected function getFormView($parentObject, $object = null, $data = [])
+    protected function getFormView($parentObject, $request, $object = null, $data = [])
     {
         // add parent object to the view
         $data[$this->formParentObjectIndex] = $parentObject;
 
         // the child repository need to use the parent object and will be sent as third option
         $parameters = [$parentObject];
-        return $this->createFormView($data, $object, $parameters);
+        return $this->createFormView($data, $object, $request, $parameters);
     }
 
     /**
@@ -342,14 +343,16 @@ trait ChildRepositoryControllerTrait
      * Prepares the data only for the
      * @param array $data
      * @param Model $object
+     * @param Request $request
      * @param Model $parentObject
      */
-    protected function prepareEditFormData(array &$data, $object, $parentObject) {}
+    protected function prepareEditFormData(array &$data, $object, $request, $parentObject) {}
 
     /**
      * Prepares the data for create form
      * @param array $data
+     * @param Request $request
      * @param Model $parentObject
      */
-    protected function prepareCreateFormData(array &$data, $parentObject) {}
+    protected function prepareCreateFormData(array &$data, $request, $parentObject) {}
 }

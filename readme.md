@@ -1,5 +1,11 @@
 # Package in development progress
 
+# Changes
+## 0.9.1
+- the getFormView in both repository controllers has new parameter with current Request
+- all the prepareFormData methods has new parameter with current request (last property)
+- the ChildRepositoryController trait has request parameter then parent parent object
+
 # Requirements
 
     Laravel Framework (5.1, 5.2) - 5.0 not tested
@@ -59,7 +65,79 @@ Implement the createRepository method. You can/need to return the repository
         return new AreaRepository(); // this will use the RepositoryTrait
     }
     
+You can overide the form data for edit/create and both usages by extending these functions.
+
+    /**
+     * Prepares the form data for all the views
+     * @param array $data
+     * @param Model|null $object
+     * @param Request $request
+     */
+    protected function prepareFormData(array &$data, $object, $request) {}
+
+    /**
+     * Prepares the data only for the
+     * @param array $data
+     * @param Model $object
+     * @param Request $request
+     */
+    protected function prepareEditFormData(array &$data, $object, $request) {}
+
+    /**
+     * Prepares the data for create form
+     * @param array $data
+     * @param Request $request
+     */
+    protected function prepareCreateFormData(array &$data, $request) {}
+    
 ## ChildRepositoryControllerTrait 
+
+Very similar boot usage as repository controller with more options:
+
+    /**
+     * Defines the index for the parent object in the form view. Must be in the
+     * data of the model (witout the _id)
+     * @var string
+     */
+    protected $formParentObjectIndex = "parent";
+    /**
+     * Defines a list of collumns we want to select from the parent. If empty
+     * the repository will use the name collumn and the key
+     * @var array
+     */
+    protected $parentObjectSelect = [];
+    /**
+     * Defines the collumn for the parent object name
+     * @var string
+     */
+    protected $parentObjectNameCollumn = "name";
+    
+You can overide the form data for edit/create and both usages by extending these functions.
+
+    /**
+     * Prepares the form data for all the views
+     * @param array $data
+     * @param Model|null $object
+     * @param Model $parentObject
+     */
+    protected function prepareFormData(array &$data, $object, $parentObject) {}
+
+    /**
+     * Prepares the data only for the
+     * @param array $data
+     * @param Model $object
+     * @param Request $request
+     * @param Model $parentObject
+     */
+    protected function prepareEditFormData(array &$data, $object, $request, $parentObject) {}
+
+    /**
+     * Prepares the data for create form
+     * @param array $data
+     * @param Request $request
+     * @param Model $parentObject
+     */
+    protected function prepareCreateFormData(array &$data, $request, $parentObject) {}
 
 ## RepositoryTrait
 

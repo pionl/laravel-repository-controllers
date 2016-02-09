@@ -1,10 +1,18 @@
 <?php
 namespace Pion\Repository\Traits;
 
-use Pion\Repository\RepositoryServiceProvider;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Pion\Support\Controllers\Traits\URLTrait;
 use StandardExceptions\OperationExceptions\InvalidOperationException;
 
+/**
+ * Class BaseRepositoryControllerTrait
+ *
+ * The base trait used in the other repository controllers traits
+ *
+ * @package Pion\Repository\Traits
+ */
 trait BaseRepositoryControllerTrait
 {
     use URLTrait;
@@ -60,7 +68,7 @@ trait BaseRepositoryControllerTrait
 
     /**
      * Creates a repository we will use
-     * @return BaseRepository
+     * @return RepositoryTrait
      */
     abstract protected function createRepository();
 
@@ -86,18 +94,20 @@ trait BaseRepositoryControllerTrait
     /**
      * Runs the basic settings validation and detects what method we should use. Calls the
      *
-     * @param array $data
-     * @param $object
-     * @param array $prepareParamters
+     * @param array $data               the array of data to use and pass to view
+     * @param Model|null $object        the model for the current edit mode
+     * @param Request $request          the current request
+     * @param array $prepareParamters   you can pass aditional data to the prepareForm methods. Will add after normal
+     * parameters
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function createFormView(array $data, $object, $prepareParamters = []) {
+    protected function createFormView(array $data, $object, $request, $prepareParamters = []) {
 
         InvalidOperationException::ifFalse(
             is_string($this->formView),
             "You must subclass this method and return a view for form");
 
-        $this->runPrepareFunction("prepareFormData", $data, $object, $prepareParamters);
+        $this->runPrepareFunction("prepareFormData", $data, $object, $request, $prepareParamters);
 
         $isEdit = is_object($object);
 
@@ -105,9 +115,9 @@ trait BaseRepositoryControllerTrait
         if ($isEdit) {
             $data[$this->formObjectIndex] = $object;
 
-            $this->runPrepareFunction("prepareEditFormData", $data, $object, $prepareParamters);
+            $this->runPrepareFunction("prepareEditFormData", $data, $object, $request, $prepareParamters);
         } else {
-            $this->runPrepareFunction("prepareCreateFormData", $data, $object, $prepareParamters);
+            $this->runPrepareFunction("prepareCreateFormData", $data, $object, $request, $prepareParamters);
         }
 
         // return the data
@@ -117,16 +127,17 @@ trait BaseRepositoryControllerTrait
     /**
      * Tries to run the given method with all the prepare parameters. Supports custom
      * data to be sent in repositories
-     * @param $name
-     * @param $data
-     * @param $object
-     * @param $prepareParamters
+     * @param string $name
+     * @param array &$data
+     * @param Model|null $object
+     * @param Request $request
+     * @param array $prepareParamters
      */
-    private function runPrepareFunction($name, &$data, $object, $prepareParamters) {
+    private function runPrepareFunction($name, &$data, $object, $request, $prepareParamters) {
         if (method_exists($this, $name)) {
             // merge the parameters
             $parameters = array_merge([
-                &$data, $object
+                &$data, $object, $request
             ], $prepareParamters);
 
             call_user_func_array(array($this, $name), $parameters);
@@ -137,19 +148,22 @@ trait BaseRepositoryControllerTrait
      * Prepares the form data for all the views
      * @param array $data
      * @param Model|null $object
+     * @param Request $request
      */
-    protected function prepareFormData(array &$data, $object) {}
+    protected function prepareFormData(array &$data, $object, $request) {}
 
     /**
      * Prepares the data only for the
      * @param array $data
-     * @param $object
+     * @param Model $object
+     * @param Request $request
      */
-    protected function prepareEditFormData(array &$data, $object) {}
+    protected function prepareEditFormData(array &$data, $object, $request) {}
 
     /**
      * Prepares the data for create form
      * @param array $data
+     * @param Request $request
      */
-    protected function prepareCreateFormData(array &$data) {}
+    protected function prepareCreateFormData(array &$data, $request) {}
 }
