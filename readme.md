@@ -1,6 +1,9 @@
 # Package in development progress
 
 # Changes
+## 0.9.2
+- removed crazycodr/standard-exceptions depedency
+
 ## 0.9.1
 - the getFormView in both repository controllers has new parameter with current Request
 - all the prepareFormData methods has new parameter with current request (last property)
