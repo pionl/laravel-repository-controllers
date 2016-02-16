@@ -5,8 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Pion\Repository\Controllers\RepositoryController;
-use StandardExceptions\OperationExceptions\InvalidOperationException;
-use StandardExceptions\ValidationExceptions\InvalidNumberException;
 
 /**
  * Class ChildRepositoryControllerTrait
@@ -106,7 +104,9 @@ trait ChildRepositoryControllerTrait
     public function create(Request $request, $parentId)
     {
         // check if valide int
-        InvalidNumberException::throwIf($parentId);
+        if (!is_numeric($parentId)) {
+            throw new \InvalidArgumentException("Invalide parent number");
+        }
 
         // get the parent object
         $parentObject = $this->createNavigationWithParentId($parentId, $this->createTitle);
@@ -280,10 +280,14 @@ trait ChildRepositoryControllerTrait
      * @param int $parentId
      * @param int $nextParentId
      * @return $this
+     * @throws \LogicException
      */
     protected function checkParentIds($parentId, $nextParentId)
     {
-        InvalidOperationException::ifFalse($parentId == $nextParentId, "Invalide parent id change.");
+        if ($parentId != $nextParentId) {
+            throw new \LogicException("Invalide parent id change.");
+        }
+
         return $this;
     }
 

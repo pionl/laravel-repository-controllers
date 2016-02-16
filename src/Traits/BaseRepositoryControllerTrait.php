@@ -4,7 +4,6 @@ namespace Pion\Repository\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Pion\Support\Controllers\Traits\URLTrait;
-use StandardExceptions\OperationExceptions\InvalidOperationException;
 
 /**
  * Class BaseRepositoryControllerTrait
@@ -100,12 +99,12 @@ trait BaseRepositoryControllerTrait
      * @param array $prepareParamters   you can pass aditional data to the prepareForm methods. Will add after normal
      * parameters
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \LogicException
      */
     protected function createFormView(array $data, $object, $request, $prepareParamters = []) {
-
-        InvalidOperationException::ifFalse(
-            is_string($this->formView),
-            "You must subclass this method and return a view for form");
+        if (!is_string($this->formView)) {
+            throw new \LogicException("You must subclass this method and return a view for form");
+        }
 
         $this->runPrepareFunction("prepareFormData", $data, $object, $request, $prepareParamters);
 

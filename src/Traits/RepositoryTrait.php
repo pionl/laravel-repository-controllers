@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use StandardExceptions\OperationExceptions\InvalidOperationException;
 
 /**
  * Class RepositoryTrait
@@ -422,12 +421,13 @@ trait RepositoryTrait
      * @param bool $isIndex
      * @param Model $object
      * @return array
+     * @throws \LogicException
      */
     protected function getRedirectDataForAction($isIndex, $object)
     {
         // check if the obj on non index action
-        if (!$isIndex) {
-            InvalidOperationException::ifFalse(is_object($object));
+        if (!$isIndex && !is_object($object)) {
+            throw new \LogicException("Action has no object");
         }
 
         return $isIndex ? [] : [

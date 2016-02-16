@@ -3,7 +3,6 @@
   "description": "",
   "require": {
     "laravel/framework": "5.*",
-    "crazycodr/standard-exceptions": "dev-master",
     "pion/laravel-support-controllers": "1.0.1"
   },
   "require-dev": {
@@ -27,13 +26,6 @@
       "email": "martin.kluska@imakers.cz"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git://github.com/pionl/standard-exceptions.git"
-    }
-  ],
-
   "minimum-stability": "dev",
   "prefer-stable": true
 }
