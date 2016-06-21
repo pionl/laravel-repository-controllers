@@ -1,6 +1,17 @@
 # Package in development progress
 
+A few lines of code to create a form/create page via the repository way. In default the controller supports all the methods
+for a CRUD (missing the index/show page, you can implement it on your end). The controller uses the repository class
+that holds all the standart methods for the model, just create a Repository class for your eloquent model, return the class
+and thats all.
+
 # Changes
+
+## 0.9.3
+- hotfix for the prepareCreateFormData usage not passing the correct request object
+- repository trait support createNavigationForCreateAction and createNavigationForEditAction
+- updated RepositoryController to use abstract
+
 ## 0.9.2
 - removed crazycodr/standard-exceptions depedency
 
