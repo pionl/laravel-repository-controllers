@@ -3,7 +3,7 @@
   "description": "",
   "require": {
     "laravel/framework": "5.*",
-    "pion/laravel-support-controllers": "1.0.1"
+    "pion/laravel-support-controllers": "~1.0"
   },
   "require-dev": {
   },
