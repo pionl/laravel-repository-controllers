@@ -13,7 +13,7 @@ use Pion\Repository\Traits\RepositoryControllerTrait;
  *
  * @package Pion\Repository\Controllers
  */
-class RepositoryController extends Controller
+abstract class RepositoryController extends Controller
 {
     use RepositoryControllerTrait;
 
@@ -24,16 +24,4 @@ class RepositoryController extends Controller
     {
         $this->bootRepository();
     }
-
-
-    /**
-     * Creates a repository we will use the same from the ChildRepositoryControllerTrait
-     * @return BaseRepository
-     */
-    protected function createRepository()
-    {
-        return null;
-    }
-
-
 }

@@ -33,7 +33,7 @@ trait RepositoryControllerTrait {
      */
     public function create(Request $request)
     {
-        $this->createNavigation($this->createTitle);
+        $this->createNavigationForCreateAction($request);
         return $this->getFormView($request);
     }
 
@@ -63,7 +63,7 @@ trait RepositoryControllerTrait {
     {
         $object = $this->repository->findOrFail($id);
 
-        $this->createNavigation($this->editTitle, $object);
+        $this->createNavigationForEditAction($request, $object);
 
         return $this->getFormView($request, $object);
     }
@@ -157,4 +157,34 @@ trait RepositoryControllerTrait {
     {
         return $this->createFormView($data, $object, $request);
     }
+
+    #####
+    ### Navigation
+    #####
+
+    /**
+     * Generates the navigation for create action
+     * @param Request $request
+     */
+    protected function createNavigationForCreateAction(Request $request)
+    {
+        $this->createNavigation($this->createTitle);
+    }
+
+    /**
+     * Generates the navigaiton for edit action
+     * @param Request $request
+     * @param Model $object
+     */
+    protected function createNavigationForEditAction(Request $request, $object)
+    {
+        $this->createNavigation($this->editTitle, $object);
+    }
+
+    /**
+     * Generates the navigation with list support.
+     * @param string|null   $title              you can provide model to use as modelForShow. Title will have null value
+     * @param Model|null    $modelForShow      indicates if we want to show a model with show url
+     */
+    abstract protected function createNavigation($title = null, $modelForShow = null);
 }

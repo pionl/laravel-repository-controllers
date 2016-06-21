@@ -41,20 +41,35 @@ fork the pion/laravel-support-controllers to implement favorite package ), other
 ## RepositoryControllerTrait
 
 In construct of the controller use the bootRepository() to prepare the repository data. This will also use translated
-titles and etc.
+titles and etc. The best practive is to build your own RepositoryController that uses the trait. Then you can extend the
+methods fromt trait like a normal class. For default usage you can extend provided `RepositoryController`
 
     /**
      * RepositoryController constructor.
      */
     public function __construct()
     {
-        parent:__construct();
+        parent::__construct();
+        // required!
         $this->bootRepository();
-        $this->editTitle = "Editing this entry"; // call after boot!
         $this->formView = "admin.season.form"; // the desired form
+        
+        // optional
+        $this->editTitle = "Editing this entry"; // call after boot!
         $this->formObjectIndex = "season";  // the index of the object in form
         $this->detailModelAction = "edit"; // instead of showing the detail action to show, use the edit page
         $this->setRedirectToEditOnCreate(true);
+    }
+    
+or you can use
+    
+    /**
+     * RepositoryController constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->bootRepositoryWith("admin.season.form", "Create new!", "Edit this one");
     }
     
 Implement the createRepository method. You can/need to return the repository
@@ -92,6 +107,30 @@ You can overide the form data for edit/create and both usages by extending these
      * @param Request $request
      */
     protected function prepareCreateFormData(array &$data, $request) {}
+    
+### Customizations for navigation
+_Supported since 0.9.3 version_
+
+You can customize the own navigation via methods (you can or not call the parent method with the trait subclass):
+
+    /**
+     * Generates the navigation for create action
+     * @param Request $request
+     */
+    protected function createNavigationForCreateAction(Request $request)
+    {
+        $this->createNavigation($this->createTitle);
+    }
+
+    /**
+     * Generates the navigaiton for edit action
+     * @param Request $request
+     * @param Model $object
+     */
+    protected function createNavigationForEditAction(Request $request, $object)
+    {
+        $this->createNavigation($this->editTitle, $object);
+    }
     
 ## ChildRepositoryControllerTrait 
 

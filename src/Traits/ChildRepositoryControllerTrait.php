@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Pion\Repository\Controllers\RepositoryController;
+use Pion\Repository\Helpers\ChildRepositoryHelper;
 
 /**
  * Class ChildRepositoryControllerTrait
@@ -33,7 +34,7 @@ trait ChildRepositoryControllerTrait
      * for extending usage
      */
     use BaseRepositoryControllerTrait {
-        bootRepository as bootBaseRepository;
+        bootRepositoryWith as bootBaseRepositoryWith;
     }
 
     /**
@@ -64,11 +65,17 @@ trait ChildRepositoryControllerTrait
     protected $repositoryController;
 
     /**
-     * Boots the basic attributes
+     * Boots the repository with given parameters
+     *
+     * @param string      $formView
+     * @param string|null $createTitle
+     * @param string|null $editTitle
+     *
+     * @return $this
      */
-    protected function bootRepository()
+    protected function bootRepositoryWith($formView, $createTitle = null, $editTitle = null)
     {
-        $this->bootBaseRepository();
+        parent::bootBaseRepositoryWith($formView, $createTitle, $editTitle);
 
         if (empty($this->parentObjectSelect)) {
             $this->parentObjectSelect = [
@@ -82,9 +89,10 @@ trait ChildRepositoryControllerTrait
          * we need to pass our repository and store it to new property.
          * The methods can be overided becouse of the incorrect parameters
          */
-        $this->repositoryController = new RepositoryController();
+        $this->repositoryController = new ChildRepositoryHelper($this);
         $this->repositoryController->setRepository($this->repository);
     }
+
 
     /**
      * Creates a parent controller for connection. Must use the
